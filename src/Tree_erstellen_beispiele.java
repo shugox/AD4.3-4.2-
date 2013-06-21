@@ -28,10 +28,10 @@ public class Tree_erstellen_beispiele {
 		DecisionTree TestTree = new DecisionTree(8, 8);
 		TestTree.setParameter("test", 1);
 		decisions.add("$1==J");
-		TestTree.setParameterDescription(1, "Eine boolsche variable die anzeigt ob das Bild selbst erstellt wurde (J/N)");
+		TestTree.setParameterDescription(1, "Boolean: variable die anzeigt ob das Bild selbst erstellt wurde (J/N)");
 		TestTree.setDecisionDescription(1, "Hast du das bild Selbst erstellt?");
 		decisions.add("$2==J");
-		TestTree.setParameterDescription(2, "Eine boolsche variable die anzeigt ob das Bild unter einer freien Lizenz veröffenlicht werdne soll (J/N)");
+		TestTree.setParameterDescription(2, "Boolean: variable die anzeigt ob das Bild unter einer freien Lizenz veröffenlicht werdne soll (J/N)");
 		TestTree.setDecisionDescription(2, "Willst du es unter einer freien Lizenz veröffenlichen?");
 		decisions.add("$3>100");
 		TestTree.setParameterDescription(3, "Integer: Das Alter des Bildes (J/N)");
@@ -92,14 +92,40 @@ public class Tree_erstellen_beispiele {
 		parameters.add("80");
 		parameters.add("0");
 		parameters.add("1");
-		System.out.println(TestTree.conclude(parameters));
+		System.out.println(TestTree.conclude_verbose(parameters.toArray(new String[parameters.size()])));
 		
 		
 		//alles aus der csv geparst
 		System.out.println("\n-------------------------------Aus der csv geparster Decision tree und geparste parameter------------------------\n");
+		System.out.println("\n--------Bild---------\n");
 		params = Parser.parseParameters(".\\bild_cases.csv");
 		for(List<String> param : params) {
 			System.out.println(TestTree.conclude(param));
+		}
+		System.out.println("\n--------Bewerber--------\n");
+		TestTree = Parser.parseTreeCsv(".\\bewerber.csv");
+		params = Parser.parseParameters(".\\bewerber_cases.csv");
+		for(List<String> param : params) {
+			//System.out.println(TestTree.conclude_verbose(param.toArray(new String[param.size()])));
+			System.out.println(TestTree.conclude(param));
+		}
+		System.out.println("\n--------Kunde--------\n");
+		TestTree = Parser.parseTreeCsv(".\\kunde.csv");
+		params = Parser.parseParameters(".\\kunde_cases.csv");
+		for(List<String> param : params) {
+			System.out.println(TestTree.conclude_verbose(param.toArray(new String[param.size()])));
+			System.out.println("\n----------------\n");
+		//	System.out.println(TestTree.conclude_(param));
+		}
+		
+		System.out.println("\n--------Gehalt--------\n");
+		TestTree = Parser.parseTreeCsv(".\\gehalt.csv");
+		params = Parser.parseParameters(".\\gehalt_cases.csv");
+		for(List<String> param : params) {
+		
+			System.out.println(TestTree.conclude_verbose(param.toArray(new String[param.size()])));
+			System.out.println("\n----------------\n");
+		//	System.out.println(TestTree.conclude_(param));
 		}
 
 	}

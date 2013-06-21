@@ -56,12 +56,15 @@ public class DecisionTree implements DecisionTreeInterface{
 		int next = decision;
 		int before;
 		while(!(next < 0)) {
+			//System.out.println(next);
 			System.out.println(decisionDescriptions[next]);
 			before = next;
+			
 			next = decide(next, 1);
 			if(next_decisions.get(before).getKey()-1 == next) System.out.println("Falsch");
 			else System.out.println("Wahr");
 		}
+		//System.out.println(next);
 		System.out.println("Conclusion: " + this.conclusions.get((next*-1)-2));
 		return this.conclusions.get((next*-1)-2);
 	}
@@ -107,6 +110,7 @@ public class DecisionTree implements DecisionTreeInterface{
 			if(matcher.start() - matcher.end() != 0){
 				String temp;
 				if(matcher.group().contains("$")) {
+					
 					 temp = param_values[(Integer.parseInt(matcher.group().replace("$", ""))-1)];
 					 if(!value.equals("-1")) temp = value;
 					
@@ -114,7 +118,7 @@ public class DecisionTree implements DecisionTreeInterface{
 					temp = matcher.group();
 				
 				}
-				if(temp.matches("[a-zA-Z]+")){
+				if(temp.matches("[a-zA-Z ]+")){
 					temp = "\""+temp+ "\"";
 				}
 				
@@ -178,7 +182,7 @@ public class DecisionTree implements DecisionTreeInterface{
 
 	@Override
 	public void setParameterDescriptions(List<String> descriptions) {
-		this.paramDescriptions = (String[]) descriptions.toArray();
+		this.paramDescriptions = (String[]) descriptions.toArray(new String[descriptions.size()]);
 		
 	}
 
@@ -192,7 +196,7 @@ public class DecisionTree implements DecisionTreeInterface{
 
 	@Override
 	public void setDecisionDescription(List<String> descriptions) {
-		this.decisionDescriptions = (String[]) descriptions.toArray();
+		this.decisionDescriptions = (String[]) descriptions.toArray(new String[descriptions.size()]);
 		
 	}
 
@@ -203,6 +207,7 @@ public class DecisionTree implements DecisionTreeInterface{
 		return decisions;
 	}
 	public void setDecisions(List<String> decisions) {
+	
 		this.decisions = decisions;
 	}
 	public List<Entry<Integer, Integer>> getNext_decisions() {

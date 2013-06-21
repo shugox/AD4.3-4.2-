@@ -18,6 +18,8 @@ public class Parser {
 		List<String> decisions = new LinkedList<String>();
 		List<Entry<Integer,Integer>> next_decisions = new LinkedList<Entry<Integer,Integer>>();
 		List<String> conclusions = new LinkedList<String>();
+		List<String> pDescriptions = new LinkedList<String>();
+		List<String> dDescriptions = new LinkedList<String>();
 		BufferedReader br = null;
 		Pattern pattern;
 		Matcher matcher;
@@ -27,7 +29,7 @@ public class Parser {
 			br = new BufferedReader(new FileReader(path));
 			while(((line = br.readLine()) != null)) {
 				if(!line.startsWith("//")) {
-					
+				if(line.toLowerCase().startsWith("decisions=")) {	
 				
 				pattern = Pattern.compile("(\\$?[0-9a-zA-Z]+[><=|&]+\\$?[0-9a-zA-Z]+)");
 				matcher = pattern.matcher(line);
@@ -35,18 +37,39 @@ public class Parser {
 					decisions.add(matcher.group());
 					//System.out.println("decision: " + matcher.group());
 				}
+				}
+				if(line.toLowerCase().startsWith("following=")) {
 				pattern = Pattern.compile("-?[1-9]+,-?[1-9]+");
 				matcher = pattern.matcher(line);
 				while(matcher.find()) {
 					next_decisions.add(new AbstractMap.SimpleEntry<Integer,Integer>(Integer.parseInt(matcher.group().split(",")[0]), Integer.parseInt(matcher.group().split(",")[1])));
 					//System.out.println("following: " + Integer.parseInt(matcher.group().split(",")[0]) + " "+ Integer.parseInt(matcher.group().split(",")[1]));
 				}
-				pattern = Pattern.compile("\"[A-Za-z ]+\"");
+				}
+				if(line.toLowerCase().startsWith("conclusions=")) {
+				pattern = Pattern.compile("\"[A-Za-zäöüß ]+\"");
 				matcher = pattern.matcher(line);
 				while(matcher.find()) {
 					conclusions.add(matcher.group().replace("\"", ""));
 					//System.out.println(matcher.group().replace("\"", ""));
 				}
+				}
+				if(line.toLowerCase().startsWith("ddescription=")) {
+					pattern = Pattern.compile("\"[A-Za-z0-9äöüß ?!.:]+\"");
+					matcher = pattern.matcher(line);
+					while(matcher.find()) {
+						dDescriptions.add(matcher.group().replace("\"", ""));
+						//System.out.println(matcher.group().replace("\"", ""));
+					}
+					}
+				if(line.toLowerCase().startsWith("pdescription=")) {
+					pattern = Pattern.compile("\"[A-Za-z0-9äöüß ?!:.]+\"");
+					matcher = pattern.matcher(line);
+					while(matcher.find()) {
+						pDescriptions.add(matcher.group().replace("\"", ""));
+						//System.out.println(matcher.group().replace("\"", ""));
+					}
+					}
 				//System.out.println(line);
 				}
 			}
@@ -61,8 +84,10 @@ public class Parser {
 			}
 		}
 		
-		
-		return new DecisionTree(decisions.size(), decisions, conclusions, next_decisions);
+		DecisionTree dt = new DecisionTree(decisions.size(), decisions, conclusions, next_decisions);
+		dt.setDecisionDescription(dDescriptions);
+		dt.setParameterDescriptions(pDescriptions);
+		return dt;
 		
 	}
 	
@@ -80,7 +105,7 @@ public class Parser {
 				if(!line.startsWith("//")) {
 				
 				List<String> params = new LinkedList<String>();
-				pattern = Pattern.compile("\"\\S+\"");
+				pattern = Pattern.compile("\"[A-Za-z0-9 ]+\"");
 				matcher = pattern.matcher(line);
 				while(matcher.find()) {
 					params.add(matcher.group().replace("\"", ""));
@@ -100,7 +125,8 @@ public class Parser {
 				ex.printStackTrace();
 			}
 		}
-	
+		
+		
 		return parameters;
 	}
 }
