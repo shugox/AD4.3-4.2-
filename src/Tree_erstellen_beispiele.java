@@ -56,7 +56,7 @@ public class Tree_erstellen_beispiele {
 		TestTree.setConclusions(conclusions);
 		//übergänge: indizies der nächsten decisions bei oben angegebener reihenfolge (start bei 1) 
 		//negative zahlen: der betrag ist der index einer conclusion, auch hier reihenfolge beachten 
-		next_decisions.add(new AbstractMap.SimpleEntry<Integer,Integer>(3, 2));
+		next_decisions.add(new AbstractMap.SimpleEntry<Integer,Integer>(3, 2)); 
 		next_decisions.add(new AbstractMap.SimpleEntry<Integer,Integer>(-2, 5));
 		next_decisions.add(new AbstractMap.SimpleEntry<Integer,Integer>(4, -1));
 		next_decisions.add(new AbstractMap.SimpleEntry<Integer,Integer>(-2, 6));

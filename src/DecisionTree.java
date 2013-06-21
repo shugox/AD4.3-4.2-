@@ -62,11 +62,19 @@ public class DecisionTree implements DecisionTreeInterface{
 		System.out.println("Conclusion: " + this.conclusions.get((next*-1)-2));
 		return this.conclusions.get((next*-1)-2);
 	}
-	
+	public int decide(int decision, int verbose, String value) {
+		Boolean result;
+		int next;
+		List<String> formattedDecition = formatDecision(decisions.get(decision), value);
+		result = evaluateDecision(formattedDecition, verbose);
+		if(result) next =  next_decisions.get(decision).getValue()-1;
+		else next = next_decisions.get(decision).getKey()-1;
+		return next;
+	}
 	public int decide(int decision, int verbose) {
 		Boolean result;
 		int next;
-		List<String> formattedDecition = formatDecision(decisions.get(decision));
+		List<String> formattedDecition = formatDecision(decisions.get(decision), "-1");
 		result = evaluateDecision(formattedDecition, verbose);
 		if(result) next =  next_decisions.get(decision).getValue()-1;
 		else next = next_decisions.get(decision).getKey()-1;
@@ -88,7 +96,7 @@ public class DecisionTree implements DecisionTreeInterface{
 		return result;
 	}
 	
-	private List<String> formatDecision(String args) {
+	private List<String> formatDecision(String args, String value) {
 		List<String> formattedStrings = new LinkedList<String>();
 		Pattern pattern = Pattern.compile("(\\$?[0-9a-zA-Z]+|[><=|&]*)");
 		Matcher matcher = pattern.matcher(args);
@@ -97,7 +105,7 @@ public class DecisionTree implements DecisionTreeInterface{
 				String temp;
 				if(matcher.group().contains("$")) {
 					 temp = param_values.get(Integer.parseInt(matcher.group().replace("$", ""))-1);
-				
+					 if(!value.equals("-1")) temp = value;
 					
 				} else {
 					temp = matcher.group();
