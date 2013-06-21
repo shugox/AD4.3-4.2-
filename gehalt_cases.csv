@@ -1,0 +1,5 @@
+//boolean jahresMonat, boolean zehnJahreAngestellt, fuenfundzwanzigJahreAngestellt
+"Y", "Y", "Y"
+"Y", "Y", "N"
+"Y", "N", "N"
+"N", "", ""

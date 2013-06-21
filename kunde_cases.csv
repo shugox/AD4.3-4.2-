@@ -1,0 +1,6 @@
+// boolean neuerKunde, Umsatz, Zahlungsverhalten 
+"Nein", "5000", "nicht Einwandfrei"
+"Nein", "15000", "Einwandfrei"
+"Nein", "15000", "nicht Einwandfrei"
+"Nein", "5000", "Einwandfrei"
+"Ja", "", ""
