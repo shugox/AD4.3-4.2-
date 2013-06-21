@@ -81,7 +81,7 @@ public class Tree_erstellen_beispiele {
 		
 		//hier das gleiche setup wie oben, bloß die konfigurations für den baum aus der csv geparst und statt J/N eben 1/0
 		//keine descriptions
-		System.out.println("\n---------------------------Aus der csv geparster Decision tree------------------------------------\n");
+		System.out.println("\n---------------------------Aus der csv geparste Decision trees------------------------------------\n");
 		TestTree = Parser.parseTreeCsv(".\\bild.csv");
 		parameters = new LinkedList<String>();
 		parameters.add("0");
@@ -96,7 +96,7 @@ public class Tree_erstellen_beispiele {
 		
 		
 		//alles aus der csv geparst
-		System.out.println("\n-------------------------------Aus der csv geparster Decision tree und geparste parameter------------------------\n");
+		System.out.println("\n------8-------------------------Aus der csv geparster Decision tree und geparste parameter------------------------\n");
 		System.out.println("\n--------Bild---------\n");
 		params = Parser.parseParameters(".\\bild_cases.csv");
 		for(List<String> param : params) {
