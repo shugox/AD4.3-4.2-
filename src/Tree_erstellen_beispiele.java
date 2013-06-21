@@ -94,38 +94,45 @@ public class Tree_erstellen_beispiele {
 		parameters.add("1");
 		System.out.println(TestTree.conclude_verbose(parameters.toArray(new String[parameters.size()])));
 		
-		
+		int caseno = 1;
 		//alles aus der csv geparst
 		System.out.println("\n------8-------------------------Aus der csv geparster Decision tree und geparste parameter------------------------\n");
 		System.out.println("\n--------Bild---------\n");
 		params = Parser.parseParameters(".\\bild_cases.csv");
 		for(List<String> param : params) {
-			System.out.println(TestTree.conclude(param));
+			System.out.println("Case "+caseno+": "+TestTree.conclude(param));
+			caseno++;
 		}
+		caseno = 1;
 		System.out.println("\n--------Bewerber--------\n");
 		TestTree = Parser.parseTreeCsv(".\\bewerber.csv");
 		params = Parser.parseParameters(".\\bewerber_cases.csv");
-		for(List<String> param : params) {
+		for(List<String> param : params) {			
 			//System.out.println(TestTree.conclude_verbose(param.toArray(new String[param.size()])));
-			System.out.println(TestTree.conclude(param));
+			System.out.println("Case "+caseno+": "+TestTree.conclude(param));
+			caseno++;
 		}
+		caseno = 1;
 		System.out.println("\n--------Kunde--------\n");
 		TestTree = Parser.parseTreeCsv(".\\kunde.csv");
 		params = Parser.parseParameters(".\\kunde_cases.csv");
 		for(List<String> param : params) {
-			System.out.println(TestTree.conclude_verbose(param.toArray(new String[param.size()])));
+			
+			System.out.println("Case "+caseno+": "+TestTree.conclude_verbose(param.toArray(new String[param.size()])));
 			System.out.println("\n----------------\n");
 		//	System.out.println(TestTree.conclude_(param));
+			caseno++;
 		}
-		
+		caseno=1;
 		System.out.println("\n--------Gehalt--------\n");
 		TestTree = Parser.parseTreeCsv(".\\gehalt.csv");
 		params = Parser.parseParameters(".\\gehalt_cases.csv");
 		for(List<String> param : params) {
 		
-			System.out.println(TestTree.conclude_verbose(param.toArray(new String[param.size()])));
+			System.out.println("Case "+caseno+": "+TestTree.conclude_verbose(param.toArray(new String[param.size()])));
 			System.out.println("\n----------------\n");
 		//	System.out.println(TestTree.conclude_(param));
+			caseno++;
 		}
 
 	}
