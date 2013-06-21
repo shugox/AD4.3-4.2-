@@ -62,11 +62,11 @@ public class DecisionTree implements DecisionTreeInterface{
 		System.out.println("Conclusion: " + this.conclusions.get((next*-1)-2));
 		return this.conclusions.get((next*-1)-2);
 	}
-	public int decide(int decision, int verbose, String value) {
+	public int decide(int decision, String value) {
 		Boolean result;
 		int next;
 		List<String> formattedDecition = formatDecision(decisions.get(decision), value);
-		result = evaluateDecision(formattedDecition, verbose);
+		result = evaluateDecision(formattedDecition, 0);
 		if(result) next =  next_decisions.get(decision).getValue()-1;
 		else next = next_decisions.get(decision).getKey()-1;
 		return next;

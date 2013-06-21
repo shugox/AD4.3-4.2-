@@ -19,7 +19,7 @@ public interface DecisionTreeInterface {
 	int getDecisionCount();
 	Entry<Integer, Integer> getFollowingDecisions(int index);
 	int decide(int decision, int verbose);
-	
+	int decide(int decision, String value);
 	void setDecisionDescription(int index, String description);
 	void setDecisionDescription(List<String> descriptions);
 	String getDecisionDescription(int index);
