@@ -3,13 +3,15 @@ import java.util.Map.Entry;
 
 
 public interface DecisionTreeInterface {
-
+	/* Anzahl der Parameter die für eine Decision benötigt werden */
 	int getParameterCount();
+	
+	/* parameter Setzten. */
 	void setParameters(List<String> params);
 	void setParameter(String param, int index);
 	
 	String getParameter(int index);
-	List<String> getParameters();
+	String[] getParameters();
 	
 	void setParameterDescription(int index, String description);
 	void setParameterDescriptions(List<String> descriptions);
@@ -25,7 +27,7 @@ public interface DecisionTreeInterface {
 	String getDecisionDescription(int index);
 
 	String conclude(List<String> params);
-	String conclude_verbose(List<String> params);
+	String conclude_verbose(String[] params);
 	String conclude(int decision);
 	
 	

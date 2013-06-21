@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -15,7 +16,7 @@ public class DecisionTree implements DecisionTreeInterface{
 	List<Entry<Integer,Integer>> next_decisions;
 	String[] decisionDescriptions;	
 	List<String> conclusions;	
-	List<String> param_values;
+	String[] param_values;
  	String[] paramDescriptions;
  	int param_count;
  	DecisionTree(int parameter_count, int decision_count) {
@@ -25,6 +26,7 @@ public class DecisionTree implements DecisionTreeInterface{
  		decisions = new LinkedList<String>();
 		next_decisions = new LinkedList<Entry<Integer,Integer>>();
 		conclusions = new LinkedList<String>();
+		param_values = new String[parameter_count];
 		
  	}
 	DecisionTree(int parameter_count, List<String> decisions, List<String> conclusions, List<Entry<Integer,Integer>> next) {
@@ -34,10 +36,11 @@ public class DecisionTree implements DecisionTreeInterface{
 		param_count = parameter_count;
 		decisionDescriptions = new String[decisions.size()];
 		paramDescriptions = new String[param_count];
+		param_values = new String[parameter_count];
 	}
 	@Override
 	public String conclude(List<String> params) {
-		this.param_values = params;
+		this.param_values = (String[]) params.toArray(new String[params.size()]);
 		return conclude(0);
 	}
 	@Override
@@ -104,7 +107,7 @@ public class DecisionTree implements DecisionTreeInterface{
 			if(matcher.start() - matcher.end() != 0){
 				String temp;
 				if(matcher.group().contains("$")) {
-					 temp = param_values.get(Integer.parseInt(matcher.group().replace("$", ""))-1);
+					 temp = param_values[(Integer.parseInt(matcher.group().replace("$", ""))-1)];
 					 if(!value.equals("-1")) temp = value;
 					
 				} else {
@@ -137,14 +140,14 @@ public class DecisionTree implements DecisionTreeInterface{
 
 	@Override
 	public void setParameters(List<String> params) {
-		param_values = params;
+		param_values = (String[]) params.toArray();
 		
 	}
 
 
 	@Override
 	public void setParameter(String param, int index) {
-		param_values.set(index-1,  param);
+		param_values[index-1] =  param;
 		
 	}
 
@@ -218,14 +221,14 @@ public class DecisionTree implements DecisionTreeInterface{
 
 	@Override
 	public String getParameter(int index) {
-		return param_values.get(index-1);
+		return param_values[index-1];
 		
 	}
 
 
 
 	@Override
-	public List<String> getParameters() {
+	public String[] getParameters() {
 		return param_values;
 		
 	}
@@ -234,7 +237,7 @@ public class DecisionTree implements DecisionTreeInterface{
 		return next_decisions.get(index);		
 	}
 	@Override
-	public String conclude_verbose(List<String> params) {
+	public String conclude_verbose(String[] params) {
 		this.param_values = params;
 		return conclude_verbose(0);
 		

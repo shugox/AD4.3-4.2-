@@ -26,6 +26,7 @@ public class Tree_erstellen_beispiele {
 		System.out.println("\n------------------------Von Hand erstellter Decision Tree---------------------------------------\n");
 		//reihenfolge decisions wichtig unten für die übergänge, reihenfolge der parameter muss die hier vorgegebene reihenfolge haben.
 		DecisionTree TestTree = new DecisionTree(8, 8);
+		TestTree.setParameter("test", 1);
 		decisions.add("$1==J");
 		TestTree.setParameterDescription(1, "Eine boolsche variable die anzeigt ob das Bild selbst erstellt wurde (J/N)");
 		TestTree.setDecisionDescription(1, "Hast du das bild Selbst erstellt?");
@@ -76,7 +77,7 @@ public class Tree_erstellen_beispiele {
 		parameters.add("J");
 		
 		
-		System.out.println(TestTree.conclude_verbose(parameters));
+		System.out.println(TestTree.conclude_verbose(parameters.toArray(new String[parameters.size()])));
 		
 		//hier das gleiche setup wie oben, bloß die konfigurations für den baum aus der csv geparst und statt J/N eben 1/0
 		//keine descriptions
