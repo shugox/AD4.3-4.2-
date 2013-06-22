@@ -103,7 +103,9 @@ public class DecisionTree implements DecisionTreeInterface{
 		}
 		return formattedStrings;
 	}
-
+	public List<String> getformatedDecision(int index, String arg) {
+		return formatDecision(this.decisions.get(index), arg);
+	}
 	@Override
 	public int getParameterCount() {
 		return param_count;
@@ -141,6 +143,7 @@ public class DecisionTree implements DecisionTreeInterface{
 
 	@Override
 	public String getDecisionDescription(int index) {
+		if(decisionDescriptions.length == 0) return new String("");
 		return decisionDescriptions[index-1];
 	}
 	

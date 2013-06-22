@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 
 import javafx.application.Application;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 public class GUI extends Application {
     Stage stage;
     Scene scene;
+    String csv_path;
     final int sizex = 1500;
     final int sizey = 800;
     final int stepx = 500;
@@ -90,7 +92,7 @@ public class GUI extends Application {
      * @param args
      */
     public static void main(String[] args) {
-        launch(args);
+        Application.launch(GUI.class, args);
 
     }
     
@@ -99,15 +101,49 @@ public class GUI extends Application {
      * @return
      */
     private DecisionTreeNode doMagic(){
-        
-        DecisionTreeNode n = DecisionTreeNode.createNode("Start");
+    	int transition;
+    	DecisionTree TestTree;
+    	TestTree = Parser.parseTreeCsv(csv_path);
+    	List<String> decisions = TestTree.getDecisions();
+    	DecisionTreeNode Nodes[] = new DecisionTreeNode[decisions.size()];
+    	DecisionTreeNode Conclusions[] = new DecisionTreeNode[TestTree.getConclusions().size()];
+    	for(int i = 0; i < decisions.size(); i++) {
+    		Nodes[i] = DecisionTreeNode.createNode(TestTree.getDecisionDescription(i+1));
+    	}
+    	for(int i = 0; i < TestTree.getConclusions().size(); i++) {
+    		Conclusions[i] = DecisionTreeNode.createNode(TestTree.getConclusions().get(i));
+    	}
+    	for(int i= 0; i < TestTree.getNext_decisions().size(); i++) {
+    		System.out.println(i);
+    		transition = TestTree.getNext_decisions().get(i).getKey();
+    		String[] transition_text = TestTree.getformatedDecision(i, "x").toArray(new String[3]);
+    		
+    		if(transition > 0) {
+    			System.out.println("Nein d");
+    			Nodes[i].createTransition(transition_text[0].replace("\"", "") + " !" + transition_text[1] + " " + transition_text[2], Nodes[transition-1]);
+    		} else {
+    			System.out.println("Nein c");
+    			Nodes[i].createTransition(transition_text[0].replace("\"", "") + " !" + transition_text[1] + " " + transition_text[2], Conclusions[(transition*-1)-1]);
+    		}
+    		transition = TestTree.getNext_decisions().get(i).getValue();
+    		transition_text = TestTree.getformatedDecision(i, "x").toArray(new String[3]);
+    		if(transition > 0) {
+    			System.out.println("Ja d ");
+    			Nodes[i].createTransition(transition_text[0].replace("\"", "") + " " + transition_text[1] + " " + transition_text[2], Nodes[transition-1]);
+    		} else {
+    			System.out.println("Ja c");
+    			Nodes[i].createTransition(transition_text[0].replace("\"", "") + " " + transition_text[1] + " " + transition_text[2], Conclusions[(transition*-1)-1]);
+    		}
+    	}
+    	/*+
+		DecisionTreeNode n = DecisionTreeNode.createNode("Start");
         DecisionTreeNode bla = n;
         n.createTransition("Test1", "Ende1");
         n = n.createTransition("Test2", "Bla2");
         n.createTransition("Test4", "Tsdas");
         n.createTransition("Test5", "Tsdaasds");
-        n.createTransition("Test6", "Tsasds");
-        return bla;
+        n.createTransition("Test6", "Tsasds");*/
+        return Nodes[0];
     }
     
     /**
@@ -117,6 +153,9 @@ public class GUI extends Application {
     public void start(Stage arg0) throws Exception {
         stage = new Stage();
         stage.show();
+        List<String> args = getParameters().getUnnamed();
+        if(args.size() != 1) throw new IllegalArgumentException();
+        csv_path = args.get(0);
         DecisionTreeNode startNode = doMagic();
         int index = 0;
         scene = createView(0, startNode);
