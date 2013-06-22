@@ -31,7 +31,7 @@ public class Parser {
 				if(!line.startsWith("//")) {
 				if(line.toLowerCase().startsWith("decisions=")) {	
 				
-				pattern = Pattern.compile("(\\$?[0-9a-zA-Z]+[><=|&]+\\$?[0-9a-zA-Z]+)");
+				pattern = Pattern.compile("(\\$?[0-9a-zA-Z]+[!><=|&]+\\$?[0-9a-zA-Z]+)");
 				matcher = pattern.matcher(line);
 				while(matcher.find()) {
 					decisions.add(matcher.group());

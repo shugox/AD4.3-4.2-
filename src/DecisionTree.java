@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -19,6 +19,7 @@ public class DecisionTree implements DecisionTreeInterface{
 	String[] param_values;
  	String[] paramDescriptions;
  	int param_count;
+ 	
  	DecisionTree(int parameter_count, int decision_count) {
  		param_count = parameter_count;
  		paramDescriptions = new String[param_count];
@@ -38,11 +39,7 @@ public class DecisionTree implements DecisionTreeInterface{
 		paramDescriptions = new String[param_count];
 		param_values = new String[parameter_count];
 	}
-	@Override
-	public String conclude(List<String> params) {
-		this.param_values = (String[]) params.toArray(new String[params.size()]);
-		return conclude(0);
-	}
+
 	@Override
 	public String conclude(int decision) {
 		int next = decision;
@@ -52,22 +49,7 @@ public class DecisionTree implements DecisionTreeInterface{
 		//System.out.println(next);
 		return this.conclusions.get((next*-1)-2);
 	}
-	public String conclude_verbose(int decision) {
-		int next = decision;
-		int before;
-		while(!(next < 0)) {
-			//System.out.println(next);
-			System.out.println(decisionDescriptions[next]);
-			before = next;
-			
-			next = decide(next, 1);
-			if(next_decisions.get(before).getKey()-1 == next) System.out.println("Falsch");
-			else System.out.println("Wahr");
-		}
-		//System.out.println(next);
-		System.out.println("Conclusion: " + this.conclusions.get((next*-1)-2));
-		return this.conclusions.get((next*-1)-2);
-	}
+	
 	public int decide(int decision, String value) {
 		Boolean result;
 		int next;
@@ -77,15 +59,7 @@ public class DecisionTree implements DecisionTreeInterface{
 		else next = next_decisions.get(decision).getKey()-1;
 		return next;
 	}
-	public int decide(int decision, int verbose) {
-		Boolean result;
-		int next;
-		List<String> formattedDecition = formatDecision(decisions.get(decision), "-1");
-		result = evaluateDecision(formattedDecition, verbose);
-		if(result) next =  next_decisions.get(decision).getValue()-1;
-		else next = next_decisions.get(decision).getKey()-1;
-		return next;
-	}
+	
 	private Boolean evaluateDecision(List<String> formattedDecision, int verbose)
 	{
 		Boolean result;
@@ -104,7 +78,7 @@ public class DecisionTree implements DecisionTreeInterface{
 	
 	private List<String> formatDecision(String args, String value) {
 		List<String> formattedStrings = new LinkedList<String>();
-		Pattern pattern = Pattern.compile("(\\$?[0-9a-zA-Z]+|[><=|&]*)");
+		Pattern pattern = Pattern.compile("(\\$?[0-9a-zA-Z]+|[><=!]*)");
 		Matcher matcher = pattern.matcher(args);
 		while(matcher.find()) {
 			if(matcher.start() - matcher.end() != 0){
@@ -200,9 +174,36 @@ public class DecisionTree implements DecisionTreeInterface{
 		
 	}
 
-
-
-
+	@Override
+	public String conclude(List<String> params) {
+		this.param_values = (String[]) params.toArray(new String[params.size()]);
+		return conclude(0);
+	}
+	public String conclude_verbose(int decision) {
+		int next = decision;
+		int before;
+		while(!(next < 0)) {
+			//System.out.println(next);
+			System.out.println(decisionDescriptions[next]);
+			before = next;
+			
+			next = decide(next, 1);
+			if(next_decisions.get(before).getKey()-1 == next) System.out.println("Falsch");
+			else System.out.println("Wahr");
+		}
+		//System.out.println(next);
+		System.out.println("Conclusion: " + this.conclusions.get((next*-1)-2));
+		return this.conclusions.get((next*-1)-2);
+	}
+	public int decide(int decision, int verbose) {
+		Boolean result;
+		int next;
+		List<String> formattedDecition = formatDecision(decisions.get(decision), "-1");
+		result = evaluateDecision(formattedDecition, verbose);
+		if(result) next =  next_decisions.get(decision).getValue()-1;
+		else next = next_decisions.get(decision).getKey()-1;
+		return next;
+	}
 	public List<String> getDecisions() {
 		return decisions;
 	}

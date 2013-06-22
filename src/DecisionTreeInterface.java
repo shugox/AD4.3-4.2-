@@ -3,29 +3,13 @@ import java.util.Map.Entry;
 
 
 public interface DecisionTreeInterface {
-	/* Anzahl der Parameter die für eine Decision benötigt werden */
-	int getParameterCount();
-	
-	/* parameter Setzten. */
-	void setParameters(List<String> params);
-	void setParameter(String param, int index);
-	
-	String getParameter(int index);
-	String[] getParameters();
-	
-	void setParameterDescription(int index, String description);
-	void setParameterDescriptions(List<String> descriptions);
-	String getParameterDescription(int index);	
+
 
 	
-	int getDecisionCount();
-	Entry<Integer, Integer> getFollowingDecisions(int index);
+	
+
 	int decide(int decision, int verbose);
 	int decide(int decision, String value);
-	void setDecisionDescription(int index, String description);
-	void setDecisionDescription(List<String> descriptions);
-	String getDecisionDescription(int index);
-
 	String conclude(List<String> params);
 	String conclude_verbose(String[] params);
 	String conclude(int decision);
@@ -39,8 +23,22 @@ public interface DecisionTreeInterface {
 	public void setNext_decisions(List<Entry<Integer, Integer>> next_decisions);
 	public List<String> getConclusions();
 	public void setConclusions(List<String> conclusions);
+	void setDecisionDescription(int index, String description);
+	void setDecisionDescription(List<String> descriptions);
+	String getDecisionDescription(int index);
+	Entry<Integer, Integer> getFollowingDecisions(int index);
+	String getParameterDescription(int index);
 	
-	
-	
+	void setParameterDescription(int index, String description);
+	void setParameterDescriptions(List<String> descriptions);
+	String getParameter(int index);
+	String[] getParameters();
+	/* parameter Setzten. */
+	void setParameters(List<String> params);
+	void setParameter(String param, int index);
+	/* Anzahl der Parameter die für eine Decision benötigt werden */
+	int getParameterCount();
+	int getDecisionCount();
+
 		
 }
