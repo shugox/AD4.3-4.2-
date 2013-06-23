@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,7 +36,7 @@ public class GUI extends Application {
     final int stepx = 600;
     DecisionTreeNode startNode;
     int index = 0;
-
+    DecisionTree TestTree;
     /**
      * Erstellt ein Text in einem Rechteck und zieht einen Rahmen darum
      * 
@@ -118,7 +120,7 @@ public class GUI extends Application {
      */
     private DecisionTreeNode doMagic() {
         int transition;
-        DecisionTree TestTree;
+        
         TestTree = Parser.parseTreeCsv(csv_path);
         List<String> decisions = TestTree.getDecisions();
         DecisionTreeNode Nodes[] = new DecisionTreeNode[decisions.size()];
@@ -135,22 +137,22 @@ public class GUI extends Application {
             String[] transition_text = TestTree.getformatedDecision(i, "x").toArray(new String[3]);
 
             if (transition > 0) {
-                System.out.println("Nein d");
+               // System.out.println("Nein d");
                 Nodes[i].createTransition(transition_text[0].replace("\"", "") + " !" + transition_text[1] + " " + transition_text[2],
                         Nodes[transition - 1]);
             } else {
-                System.out.println("Nein c");
+              //  System.out.println("Nein c");
                 Nodes[i].createTransition(transition_text[0].replace("\"", "") + " !" + transition_text[1] + " " + transition_text[2],
                         Conclusions[(transition * -1) - 1]);
             }
             transition = TestTree.getNext_decisions().get(i).getValue();
             transition_text = TestTree.getformatedDecision(i, "x").toArray(new String[3]);
             if (transition > 0) {
-                System.out.println("Ja d ");
+               // System.out.println("Ja d ");
                 Nodes[i].createTransition(transition_text[0].replace("\"", "") + " " + transition_text[1] + " " + transition_text[2],
                         Nodes[transition - 1]);
             } else {
-                System.out.println("Ja c");
+            //    System.out.println("Ja c");
                 Nodes[i].createTransition(transition_text[0].replace("\"", "") + " " + transition_text[1] + " " + transition_text[2],
                         Conclusions[(transition * -1) - 1]);
             }
@@ -197,12 +199,29 @@ public class GUI extends Application {
                     ObservableList<Node> content = ((Group) scene.getRoot()).getChildren();
                     content.clear();
                     content.addAll(createStep(startNode, new Rectangleing(0, stepx, 0, sizey), index));
+                } else if (keyEvent.getCode() == KeyCode.ENTER) {
+                	survey();
                 }
+                
             }
         });
 
     }
-
+    
+    private void survey() {
+    	int next = 0;
+    	while(next >= 0) {
+    	String inputValue = "";
+    	while(inputValue.equals("")){
+    		inputValue = JOptionPane.showInputDialog(this.TestTree.getDecisionDescription(next+1)+"\n"+this.TestTree.getParameterDescription(TestTree.getParamFroDecision(next)));
+    		if(inputValue == null) return;
+    	}
+    	
+    	next = TestTree.decide(next, inputValue);
+    	}
+    	
+    	JOptionPane.showMessageDialog(null, this.TestTree.getConclusions().get((next*-1)-2));
+    }
     /**
      * Erstellt die scene des Trees
      * 

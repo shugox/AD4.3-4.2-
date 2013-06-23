@@ -63,7 +63,7 @@ public class Parser {
 					}
 					}
 				if(line.toLowerCase().startsWith("pdescription=")) {
-					pattern = Pattern.compile("\"[A-Za-z0-9дцья ?!:.]+\"");
+					pattern = Pattern.compile("\"[A-Za-z0-9дцья ?!/:.]+\"");
 					matcher = pattern.matcher(line);
 					while(matcher.find()) {
 						pDescriptions.add(matcher.group().replace("\"", ""));

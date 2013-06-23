@@ -4,3 +4,4 @@ decisions=($1==Ja);($2<=10000);($3==Einwandfrei);($3==Einwandfrei)
 following=(2,-1);(4,3);(-1,-3);(-3,-2)
 conclusions="vorkasse", "rechnung", "nachname"
 ddescription="Neuer Kunde?", "Ist der Umsatz kleiner gleich 10000?", "Ist das Zahlungsverhalten Einwandfrei?", "Ist das Zahlungsverhalten Einwandfrei?" 
+pdescription="Ja/Nein", "Umsatz in Euro", "Einwandfrei/Nicht Einwandfrei", "Einwandfrei/Nicht Einwandfrei"

@@ -1,6 +1,7 @@
 // $1 = bSelbsterstellt, bfreieLizenz, Alter, bUrheberbekannt, bBildrechteDritter, UrbheberVestorbenVor, bEinverständnis, bUrheberZustimmungFreieLizenz
 
-decisions=($1==1);($2==1);($3>100);($4==1);($5==1);($6>70);($7==1);($8==1)
+decisions=($1==J);($2==J);($3>100);($4==J);($5==J);($6>70);($7==J);($8==J)
 following=(3,2);(-2,5);(4,-1);(-2,6);(7,-1);(8,5);(-2,-1);(-2,-1)
 conclusions="hochladen", "nicht hochladen"
 ddescription="Hast du das bild Selbst erstellt?", "Willst du es unter einer freien Lizenz veröffenlichen?", "Ist das Bild älter als 100 Jahre?", "Ist der Urheber des Bildes bekannt?", "Sind Bildrechte dritter Auszuschließen?", "Ist der Urheber vor mehr als 70 Jahren verstorben?", "Hast du das Einverständnis aller betroffenen?", "Hat der Urheber zugestimmt das Bild unter eine freie Lizenz zu stellen?"
+pdescription="J/N", "J/N", "Alter in Jahren", "J/N", "J/N", "Anzahl Jahre die Urheber verstorben", "J/N", "J/N"

@@ -2,3 +2,5 @@
 decisions=($1==J);($2==J);($2==J);($3==J);($3==J);($3==J)
 following=(3,2);(4,-1);(6,5);(-2,-1);(-3,-1);(-2,-1)
 conclusions="Einladung drucken und in Kandidatenliste aufnehmen", "Absage drucken", "gesprächseinladung drucken"
+ddescription="Hast du praktische Erfahrung?", "Hochschulstudium absolviert?", "Hochschulstudium absolviert?", "akademische Laufbahn?", "akademische Laufbahn?", "akademische Laufbahn?"
+pdescription="J/N","J/N","J/N"

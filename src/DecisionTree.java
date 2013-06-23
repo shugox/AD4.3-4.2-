@@ -182,6 +182,23 @@ public class DecisionTree implements DecisionTreeInterface{
 		this.param_values = (String[]) params.toArray(new String[params.size()]);
 		return conclude(0);
 	}
+	public int getParamFroDecision(int index) {
+		
+		Pattern pattern = Pattern.compile("(\\$?[0-9a-zA-Z]+|[><=!]*)");
+		Matcher matcher = pattern.matcher(decisions.get(index));
+		int param = 0;
+		while(matcher.find()) {
+			if(matcher.start() - matcher.end() != 0){
+				
+				if(matcher.group().contains("$")) {
+				
+					param = Integer.parseInt(matcher.group().replace("$", ""));
+				}
+			} 
+		
+	}
+		return param;
+	}
 	public String conclude_verbose(int decision) {
 		int next = decision;
 		int before;
