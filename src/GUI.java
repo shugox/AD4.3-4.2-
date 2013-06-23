@@ -32,9 +32,10 @@ public class GUI extends Application {
     Scene scene;
     String csv_path;
     final int sizex = 1500;
-    final int sizey = 1000;
+    final int sizey = 800;
     final int stepx = 600;
     final int virtualSizeX = 3000;
+    final int virtualSizeY = 1000;
     DecisionTreeNode firstNode;
     int index = 0;
     DecisionTree TestTree;
@@ -248,26 +249,45 @@ public class GUI extends Application {
         final Scene tree = new Scene(new Group(), sizex, sizey);
 
         final ObservableList<Node> content = ((Group) tree.getRoot()).getChildren();
-        content.addAll(createStep(startNode, new Rectangleing(0, stepx, 0, sizey), i));
+        content.addAll(createStep(startNode, new Rectangleing(10, stepx + 10, 10, virtualSizeY), i));
         
-        final ScrollBar sc = new ScrollBar();
-        sc.setLayoutY(sizey - 10);
-        sc.setLayoutX(0);
-        sc.setMin(0);
-        sc.setOrientation(Orientation.HORIZONTAL);
-        sc.setPrefHeight(10);
-        sc.setPrefWidth(sizex);
-        sc.setMax(virtualSizeX);
-        content.add(sc);
+        final ScrollBar scX = new ScrollBar();
+        scX.setLayoutY(0);
+        scX.setLayoutX(0);
+        scX.setMin(0);
+        scX.setOrientation(Orientation.HORIZONTAL);
+        scX.setPrefHeight(10);
+        scX.setPrefWidth(sizex);
+        scX.setMax(virtualSizeX);
         
-        sc.valueProperty().addListener(new ChangeListener<Number>() {
+        final ScrollBar scY = new ScrollBar();
+        scY.setLayoutY(10);
+        scY.setLayoutX(0);
+        scY.setMin(0);
+        scY.setOrientation(Orientation.VERTICAL);
+        scY.setPrefHeight(sizey - 10);
+        scY.setPrefWidth(10);
+        scY.setMax(virtualSizeY);
+        
+        content.add(scX);
+        content.add(scY);
+        
+        scX.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
                 tree.getRoot().setLayoutX(-new_val.doubleValue());
-                sc.setLayoutX(0 + new_val.doubleValue());
+                scX.setLayoutX(0 + new_val.doubleValue());
+                scY.setLayoutX(0 + new_val.doubleValue());
             }
         });
-        
+        scY.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                tree.getRoot().setLayoutY(-new_val.doubleValue());
+                scY.setLayoutY(10 + new_val.doubleValue());
+                scX.setLayoutY(0 + new_val.doubleValue());
+            }
+        });
         return tree;
     }
 
