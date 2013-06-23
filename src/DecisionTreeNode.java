@@ -32,7 +32,7 @@ public class DecisionTreeNode {
      * @param nextNode
      */
     public void createTransition(String decision, DecisionTreeNode nextNode) {
-        System.out.println(decision);
+       // System.out.println(decision);
         if (next == null) {
             next = new ArrayList<DecisionTreeNode>();
             decisions = new ArrayList<String>();

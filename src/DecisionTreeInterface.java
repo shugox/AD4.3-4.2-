@@ -6,9 +6,11 @@ public interface DecisionTreeInterface {
 
 
 	
-	
-
+	void setParameters(List<String> params);
 	int decide(int decision, int verbose);
+
+	
+	
 	int decide(int decision, String value);
 	String conclude(List<String> params);
 	String conclude_verbose(String[] params);
@@ -34,7 +36,7 @@ public interface DecisionTreeInterface {
 	String getParameter(int index);
 	String[] getParameters();
 	/* parameter Setzten. */
-	void setParameters(List<String> params);
+	
 	void setParameter(String param, int index);
 	/* Anzahl der Parameter die für eine Decision benötigt werden */
 	int getParameterCount();

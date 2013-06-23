@@ -96,7 +96,7 @@ public class Tree_erstellen_beispiele {
 		
 		int caseno = 1;
 		//alles aus der csv geparst
-		System.out.println("\n------8-------------------------Aus der csv geparster Decision tree und geparste parameter------------------------\n");
+		System.out.println("\n-------------------------------Aus der csv geparster Decision tree und geparste parameter------------------------\n");
 		System.out.println("\n--------Bild---------\n");
 		params = Parser.parseParameters(".\\bild_cases.csv");
 		for(List<String> param : params) {

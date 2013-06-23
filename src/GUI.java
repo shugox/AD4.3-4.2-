@@ -46,7 +46,7 @@ public class GUI extends Application {
      */
     private Node createText(String s, Rectangleing r) {
         Group g = new Group();
-        System.out.println(s);
+      //  System.out.println(s);
         Text t = new Text(((r.minx + (stepx / 2) / 2) - (s.length() * 3) + 15), (r.miny + r.maxy) / 2 + 7, s);
         if (r.maxy - r.miny > 10) {
             Rectangle borders = new Rectangle();
@@ -132,7 +132,7 @@ public class GUI extends Application {
             Conclusions[i] = DecisionTreeNode.createNode(TestTree.getConclusions().get(i));
         }
         for (int i = 0; i < TestTree.getNext_decisions().size(); i++) {
-            System.out.println(i);
+           // System.out.println(i);
             transition = TestTree.getNext_decisions().get(i).getKey();
             String[] transition_text = TestTree.getformatedDecision(i, "x").toArray(new String[3]);
 
