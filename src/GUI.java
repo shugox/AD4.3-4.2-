@@ -34,9 +34,12 @@ public class GUI extends Application {
     final int sizex = 1500;
     final int sizey = 1000;
     final int stepx = 600;
-    DecisionTreeNode startNode;
+    final int virtualSizeX = 3000;
+    DecisionTreeNode firstNode;
     int index = 0;
     DecisionTree TestTree;
+
+
     /**
      * Erstellt ein Text in einem Rechteck und zieht einen Rahmen darum
      * 
@@ -44,9 +47,13 @@ public class GUI extends Application {
      * @param r
      * @return
      */
-    private Node createText(String s, Rectangleing r) {
+    private Node createText(String s, Rectangleing r, DecisionTreeNode n ){
+        return createText(s, r, Color.BLACK, n);
+    }
+
+    private Node createText(String s, Rectangleing r, Color c, DecisionTreeNode n) {
         Group g = new Group();
-      //  System.out.println(s);
+        // System.out.println(s);
         Text t = new Text(((r.minx + (stepx / 2) / 2) - (s.length() * 3) + 15), (r.miny + r.maxy) / 2 + 7, s);
         if (r.maxy - r.miny > 10) {
             Rectangle borders = new Rectangle();
@@ -56,7 +63,8 @@ public class GUI extends Application {
             borders.setHeight(r.maxy - r.miny - 5);
             borders.setFill(Color.WHITE);
             borders.setStrokeLineCap(StrokeLineCap.ROUND);
-            borders.setStroke(Color.BLACK);
+            borders.setStroke(c);
+            n.rectangle = borders;
             g.getChildren().add(borders);
         }
         g.getChildren().add(t);
@@ -72,7 +80,7 @@ public class GUI extends Application {
      * @param dy
      * @return
      */
-    private Path createPath(int sx, int sy, int dx, int dy) {
+    private Path createPath(int sx, int sy, int dx, int dy, Color c) {
         Path p = new Path();
         MoveTo moveTo = new MoveTo();
         moveTo.setX(sx);
@@ -85,7 +93,7 @@ public class GUI extends Application {
         p.getElements().add(lineTo);
 
         p.setStrokeWidth(2);
-        p.setStroke(Color.BLACK);
+        p.setStroke(c);
         return p;
     }
 
@@ -96,11 +104,22 @@ public class GUI extends Application {
      * @param r
      * @return
      */
-    private Node createTransition(String s, Rectangleing r) {
+    private Node createTransition(String s, Rectangleing r, DecisionTreeNode n) {
+        return createTransition(s, r, Color.BLACK, n);
+    }
+
+    private Node createTransition(String s, Rectangleing r, Color c, DecisionTreeNode n) {
         Group g = new Group();
-        g.getChildren().add(createPath(r.minx - (stepx / 2), ((r.maxy - r.miny) / 2) + r.miny, r.minx, ((r.maxy - r.miny) / 2) + r.miny));
-        g.getChildren().add(createPath(r.minx - 5, ((r.maxy - r.miny) / 2) + r.miny - 3, r.minx, ((r.maxy - r.miny) / 2) + r.miny));
-        g.getChildren().add(createPath(r.minx - 5, (((r.maxy - r.miny) / 2) + r.miny) + 3, r.minx, ((r.maxy - r.miny) / 2) + r.miny));
+        Path p = createPath(r.minx - (stepx / 2), ((r.maxy - r.miny) / 2) + r.miny, r.minx, ((r.maxy - r.miny) / 2) + r.miny, c);
+        g.getChildren().add(p);
+        n.path = new ArrayList<Path>();
+        n.path.add(p);
+        p = createPath(r.minx - 5, ((r.maxy - r.miny) / 2) + r.miny - 3, r.minx, ((r.maxy - r.miny) / 2) + r.miny, c);
+        g.getChildren().add(p);
+        n.path.add(p);
+        p = createPath(r.minx - 5, (((r.maxy - r.miny) / 2) + r.miny) + 3, r.minx, ((r.maxy - r.miny) / 2) + r.miny, c);
+        g.getChildren().add(p);
+        n.path.add(p);
         g.getChildren().add(new Text(r.minx - (stepx / 4) + 5 - (s.length() * 3), ((r.maxy - r.miny) / 2) + r.miny - 2, s));
         return g;
     }
@@ -120,7 +139,7 @@ public class GUI extends Application {
      */
     private DecisionTreeNode doMagic() {
         int transition;
-        
+
         TestTree = Parser.parseTreeCsv(csv_path);
         List<String> decisions = TestTree.getDecisions();
         DecisionTreeNode Nodes[] = new DecisionTreeNode[decisions.size()];
@@ -132,27 +151,27 @@ public class GUI extends Application {
             Conclusions[i] = DecisionTreeNode.createNode(TestTree.getConclusions().get(i));
         }
         for (int i = 0; i < TestTree.getNext_decisions().size(); i++) {
-           // System.out.println(i);
+            // System.out.println(i);
             transition = TestTree.getNext_decisions().get(i).getKey();
             String[] transition_text = TestTree.getformatedDecision(i, "x").toArray(new String[3]);
 
             if (transition > 0) {
-               // System.out.println("Nein d");
+                // System.out.println("Nein d");
                 Nodes[i].createTransition(transition_text[0].replace("\"", "") + " !" + transition_text[1] + " " + transition_text[2],
                         Nodes[transition - 1]);
             } else {
-              //  System.out.println("Nein c");
+                // System.out.println("Nein c");
                 Nodes[i].createTransition(transition_text[0].replace("\"", "") + " !" + transition_text[1] + " " + transition_text[2],
                         Conclusions[(transition * -1) - 1]);
             }
             transition = TestTree.getNext_decisions().get(i).getValue();
             transition_text = TestTree.getformatedDecision(i, "x").toArray(new String[3]);
             if (transition > 0) {
-               // System.out.println("Ja d ");
+                // System.out.println("Ja d ");
                 Nodes[i].createTransition(transition_text[0].replace("\"", "") + " " + transition_text[1] + " " + transition_text[2],
                         Nodes[transition - 1]);
             } else {
-            //    System.out.println("Ja c");
+                // System.out.println("Ja c");
                 Nodes[i].createTransition(transition_text[0].replace("\"", "") + " " + transition_text[1] + " " + transition_text[2],
                         Conclusions[(transition * -1) - 1]);
             }
@@ -173,55 +192,51 @@ public class GUI extends Application {
     @Override
     public void start(Stage arg0) throws Exception {
         stage = new Stage();
-         stage.show();
-         List<String> args = getParameters().getUnnamed();
-         if(args.size() != 1) throw new IllegalArgumentException();
-         csv_path = args.get(0);
-        //csv_path = "Bild.csv";
-        startNode = doMagic();
+        stage.show();
+        List<String> args = getParameters().getUnnamed();
+        if (args.size() != 1)
+            throw new IllegalArgumentException();
+        csv_path = args.get(0);
+        // csv_path = "Bild.csv";
+        firstNode = doMagic();
         index = 0;
-        scene = createView(0, startNode);
+        scene = createView(0, firstNode);
         stage.setScene(scene);
         stage.setResizable(true);
         stage.show();
-
+       // startNode;
+        
+        firstNode.changeColor(Color.RED);
+        DecisionTreeNode node = firstNode.getNextNodes().get(0);
+        node.changeColor(Color.RED);
+        
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(final KeyEvent keyEvent) {
-                if (keyEvent.getCode() == KeyCode.A && index > 0) {
-                    index--;
-                    scene = stage.getScene();
-                    ObservableList<Node> content = ((Group) scene.getRoot()).getChildren();
-                    content.clear();
-                    content.addAll(createStep(startNode, new Rectangleing(0, stepx, 0, sizey), index));
-                } else if (keyEvent.getCode() == KeyCode.D) {
-                    index++;
-                    scene = stage.getScene();
-                    ObservableList<Node> content = ((Group) scene.getRoot()).getChildren();
-                    content.clear();
-                    content.addAll(createStep(startNode, new Rectangleing(0, stepx, 0, sizey), index));
-                } else if (keyEvent.getCode() == KeyCode.ENTER) {
-                	survey();
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    survey();
                 }
-                
             }
         });
 
     }
-    
+
     private void survey() {
-    	int next = 0;
-    	while(next >= 0) {
-    	String inputValue = "";
-    	while(inputValue.equals("")){
-    		inputValue = JOptionPane.showInputDialog(this.TestTree.getDecisionDescription(next+1)+"\n"+this.TestTree.getParameterDescription(TestTree.getParamFroDecision(next)));
-    		if(inputValue == null) return;
-    	}
-    	
-    	next = TestTree.decide(next, inputValue);
-    	}
-    	
-    	JOptionPane.showMessageDialog(null, this.TestTree.getConclusions().get((next*-1)-2));
+        int next = 0;
+        while (next >= 0) {
+            String inputValue = "";
+            while (inputValue.equals("")) {
+                inputValue = JOptionPane.showInputDialog(this.TestTree.getDecisionDescription(next + 1) + "\n"
+                        + this.TestTree.getParameterDescription(TestTree.getParamFroDecision(next)));
+                if (inputValue == null)
+                    return;
+            }
+
+            next = TestTree.decide(next, inputValue);
+        }
+
+        JOptionPane.showMessageDialog(null, this.TestTree.getConclusions().get((next * -1) - 2));
     }
+
     /**
      * Erstellt die scene des Trees
      * 
@@ -230,11 +245,29 @@ public class GUI extends Application {
      * @return
      */
     private Scene createView(int i, DecisionTreeNode startNode) {
-        Scene tree = new Scene(new Group(), sizex, sizey);
+        final Scene tree = new Scene(new Group(), sizex, sizey);
 
-        ObservableList<Node> content = ((Group) tree.getRoot()).getChildren();
+        final ObservableList<Node> content = ((Group) tree.getRoot()).getChildren();
         content.addAll(createStep(startNode, new Rectangleing(0, stepx, 0, sizey), i));
-
+        
+        final ScrollBar sc = new ScrollBar();
+        sc.setLayoutY(sizey - 10);
+        sc.setLayoutX(0);
+        sc.setMin(0);
+        sc.setOrientation(Orientation.HORIZONTAL);
+        sc.setPrefHeight(10);
+        sc.setPrefWidth(sizex);
+        sc.setMax(virtualSizeX);
+        content.add(sc);
+        
+        sc.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                tree.getRoot().setLayoutX(-new_val.doubleValue());
+                sc.setLayoutX(0 + new_val.doubleValue());
+            }
+        });
+        
         return tree;
     }
 
@@ -249,9 +282,8 @@ public class GUI extends Application {
      */
     private ArrayList<Node> createStep(DecisionTreeNode startNode, Rectangleing r, int index) {
         ArrayList<Node> nodes = new ArrayList<Node>();
-
         if (index <= 0) {
-            nodes.add(createText(startNode.getName(), r));
+            nodes.add(createText(startNode.getName(), r, startNode));
         }
 
         if (startNode.getNextNodes() != null) {
@@ -262,7 +294,7 @@ public class GUI extends Application {
             }
             for (int i = 0; i < startNode.getNextNodes().size(); i++) {
                 if (index <= 0) {
-                    nodes.add(createTransition(startNode.getTransitionNames().get(i), rec));
+                        nodes.add(createTransition(startNode.getTransitionNames().get(i), rec, startNode.getNextNodes().get(i)));
                 }
                 nodes.addAll(createStep(startNode.getNextNodes().get(i), rec, index - 1));
                 rec.miny += ((r.maxy - r.miny) / startNode.getNextNodes().size());

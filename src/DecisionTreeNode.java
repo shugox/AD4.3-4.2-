@@ -1,10 +1,16 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
+
 public class DecisionTreeNode {
     private ArrayList<DecisionTreeNode> next;
     private ArrayList<String> decisions;
     private final String nodeName;
+    public ArrayList<Path> path;
+    public Rectangle rectangle;
 
     private DecisionTreeNode(String s) {
         nodeName = s;
@@ -32,7 +38,7 @@ public class DecisionTreeNode {
      * @param nextNode
      */
     public void createTransition(String decision, DecisionTreeNode nextNode) {
-       // System.out.println(decision);
+        // System.out.println(decision);
         if (next == null) {
             next = new ArrayList<DecisionTreeNode>();
             decisions = new ArrayList<String>();
@@ -53,6 +59,10 @@ public class DecisionTreeNode {
         return n;
     }
 
+    public boolean equals(DecisionTreeNode n) {
+        return this == n;
+    }
+
     public String getName() {
         return nodeName;
     }
@@ -69,5 +79,16 @@ public class DecisionTreeNode {
             return null;
         }
         return (ArrayList<String>) decisions.clone();
+    }
+
+    public void changeColor(Color c) {
+        if (rectangle != null) {
+            rectangle.setStroke(c);
+        }
+        if (path != null) {
+            for (int i = 0; i < path.size(); i++) {
+                path.get(i).setStroke(c);
+            }
+        }
     }
 }
